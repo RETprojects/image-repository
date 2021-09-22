@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# Help
+Help()
+{
+   # Display Help
+   echo "Add description of the script functions here."
+   echo
+   echo "Syntax: TagSearch [add -f|t <query>] [tag <imgPath> <ltagList>] [search <querystring>]"
+   echo "options:"
+   echo "f     Search for a filename."
+   echo "t     Search for files containing a specific tag."
+   echo
+}
+
+# Main program                                             
+
+# Process the input options
+
+while getopts "hft" option; do
+   case $option in
+      h) # display Help
+         Help
+         exit;;
+      f) # Enter a filename
+         query=$OPTARG; pyopt=file;;
+      t) # Enter a tag
+         query=$OPTARG; pyopt=tag;;
+     \?) # Invalid option
+         echo "Error: Invalid option"
+         exit;;
+   esac
+done
+
+if [ $1 == "tag" ]
+then
+	imgPath=$2
+	tagList=$3
+	echo "$imgPath and $tagList"
+	python3 main.py "tag" $imgPath $tagList
+	exit
+fi
+if [ $1 == "add" ]
+then
+	python3 main.py "add" $2
+	exit
+fi
+if [ $1 == "search" ]
+then
+	python3 main.py "search" $3 $2
+	exit
+fi
+
